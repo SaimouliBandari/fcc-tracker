@@ -85,11 +85,13 @@ app.post('/api/users/:_id/exercises', (request, response) => {
                     console.log("error while updating");
                     return;
                   }else{
-                      response.json({_id : document._id, 
+                      response.json({
                                     username: document.username,  
-                                    date: excercise.date, 
+                                    description: excercise.description,
                                     duration: excercise.duration,
-                                     description: excercise.description});
+                                    date: excercise.date, 
+                                    _id : document._id
+                                    }); // 8th testcase.....
                   }   
               });
             }
