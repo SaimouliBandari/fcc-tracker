@@ -74,15 +74,23 @@ app.post('/api/users/:_id/exercises', (request, response) => {
       
       console.log(excercise.date);
 
-       Tracker.findById(id, (err, doc) => {
+       Tracker.findById(id, (err, document) => {
             if(err) console.log("error occured whiling finding");
             
-            if(!err && doc != null){
+            if(!err && document != null){
               // console.log(typeof doc.excercise);
               // console.log( doc.excercise.length);
              Tracker.updateOne({_id: id}, {$push : {excercise : excercise}}, (err, doc) => {
                   if(err) console.log("error while updating");
+                  else
+                    response.json({_id : document._id, 
+                                    username: document.username,  
+                                    date: excercise.date, 
+                                    duration: excercise.duration,
+                                     description: excercise.description});
+
              });
+
 
 
             }
