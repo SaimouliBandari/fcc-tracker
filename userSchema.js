@@ -3,12 +3,16 @@ const mongoose = require('mongoose');
 const excercise = {
     description : {type: String, required: true},
     duration: {type: Number, required: true},
-    date: {type: String}
+    date: {type: String, required: true}
 }
 
 const UserSchema = mongoose.Schema({
     username : {type: String, required: true},
-    excercise : [excercise]
+    excercise : [{
+        description : {type: String, required: true},
+        duration: {type: Number, required: true},
+        date: {type: String, required: true}
+    }]
 })
 
 module.exports={

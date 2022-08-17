@@ -37,7 +37,7 @@ app.post('/api/users', (request, response) =>{
     }else{
       user.save((err,doc) => {
         if(err) response.status(400).json({err});
-        else response.json({username: username, id: doc.id});
+        else response.json({username: username, _id: doc.id}); // 3rd testcase..
       })
     }
 
@@ -66,7 +66,6 @@ app.post('/api/users/:_id/exercises', (request, response) => {
         request.body.date = new Date(request.body.date);
         console.log(request.body.date);
        }
-       
       //  console.log(excercise );
       //  console.log(id);
       const date = (request.body['date']).toString().split(" ");
@@ -80,32 +79,29 @@ app.post('/api/users/:_id/exercises', (request, response) => {
             if(!err && document != null){
               // console.log(typeof doc.excercise);
               // console.log( doc.excercise.length);
-             Tracker.updateOne({_id: id}, {$push : {excercise : excercise}}, (err, doc) => {
-                  if(err) console.log("error while updating");
-                  else
-                    response.json({_id : document._id, 
+              userSchema.excercise = excercise;
+              Tracker.updateOne({_id: id}, {$push : {excercise : excercise}}, (err, doc) => {
+                  if(err){
+                    console.log("error while updating");
+                    return;
+                  }else{
+                      response.json({_id : document._id, 
                                     username: document.username,  
                                     date: excercise.date, 
                                     duration: excercise.duration,
                                      description: excercise.description});
-
-             });
-
-
-
+                  }   
+              });
             }
+      });
 
+})
+//
+app.get('/api/users',(req, res) =>{
 
-
-
-
-
-
-
-
-
-
-       });
+  Tracker.find({},{"username" : 1, "_id" : 1, "__v" : 1}, (err, doc) =>{
+      res.json(doc);
+  })
 
 })
 
