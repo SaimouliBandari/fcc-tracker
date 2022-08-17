@@ -86,12 +86,11 @@ app.post('/api/users/:_id/exercises', (request, response) => {
                     return;
                   }else{
                       response.json({
-                                    username: document.username,  
-                                    description: excercise.description,
-                                    duration: excercise.duration,
-                                    date: excercise.date, 
-                                    _id : document._id
-                                    }); // 8th testcase.....
+                        username: document.username,  
+                        description: excercise.description,
+                        duration: excercise.duration,
+                        date: excercise.date, 
+                        _id : document.id}); // 8th testcase.....
                   }   
               });
             }
