@@ -98,13 +98,27 @@ app.post('/api/users/:_id/exercises', (request, response) => {
       });
 
 })
-//
+// 6th testcase
 app.get('/api/users',(req, res) =>{
 
   Tracker.find({},{"username" : 1, "_id" : 1, "__v" : 1}, (err, doc) =>{
       res.json(doc);
   })
 
+});
+
+//9th testcase......
+app.get('/api/users/:_id/logs',(req, res) => {
+    const id = req.params['_id'];
+
+    Tracker.findById({_id: id}, (err, doc) =>{
+        res.json({
+          username : doc.username,
+          count : doc.excercise.length,
+          _id: doc.id,
+          log : doc.excercise
+        })
+    })
 })
 
 
