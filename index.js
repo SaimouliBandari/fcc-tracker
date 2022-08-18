@@ -109,27 +109,56 @@ app.get('/api/users',(req, res) =>{
 });
 
 //9th testcase......
-app.get('/api/users/:_id/logs',(req, res) => {
-    const id = req.params['_id'];
+app.get('/api/users/:_id/logs',(request, response) => {
+    
+  Tracker.findById({_id : request.params._id}, (error, result) => {
+    
+    if(!error){
+      let responseobject = result;
+      
+      
+      //checking for drom and to date.......
+      if(request.query.from || request.query.to){
+        
+          let fromDate = new Date(0);
+          let toDate = new Date();
+          
+          if(request.query.from){
+            fromDate = new Date(request.query.from);
+          }
 
-    Tracker.findById({_id: id}, (err, doc) =>{
-      let exeArr = new Array();
-      doc.excercise.forEach( obj => {
-         console.log(new Date(obj.date).toDateString());
-         const exeObj = new Object();
-         exeObj.description = obj.description;
-         exeObj.duration = obj.duration;
-         exeObj.date = new Date(obj.date).toDateString();
-         console.log(exeObj);
-         exeArr.push(exeObj);
-      });
-        res.json({
-          username : doc.username,
-          count : doc.excercise.length,
-          _id: doc.id,
-          log : exeArr
-        })
-    })
+          if(request.query.to){
+            toDate = new Date(request.query.to);
+          }
+
+          responseobject.excercise = responseobject.excercise.filter((excercise) => {
+              let date = new Date(excercise.date).getTime();
+              if(date >= fromDate && date <= toDate){
+                excercise.date = new Date(date).toDateString();
+                return excercise;
+              }
+          })
+      }
+
+        responseobject.excercise = responseobject.excercise.filter((excercise) => {
+          let date = new Date(excercise.date).getTime();
+          
+          excercise.date = new Date(date).toDateString();
+          return excercise
+          
+        });
+          
+          console.log(responseobject);
+          response.json(responseobject);
+        //  console.log(fromDate);
+         // console.log(toDate);
+
+    }
+    
+      
+  })
+ 
+  
 })
 
 

@@ -15,7 +15,7 @@ const UserSchema = mongoose.Schema({
         duration: {type: Number, required: true},
         date: {type: String, required: true}
     }]
-})
+},{versionKey : false})
 
 module.exports={
     UserSchema : UserSchema,
