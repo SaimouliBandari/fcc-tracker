@@ -60,17 +60,19 @@ app.post('/api/users/:_id/exercises', (request, response) => {
        excercise.duration = request.body['duration'];
        console.log()
        if(request.body.date === "" || request.body.date === undefined){
-        request.body.date = new Date();
+        request.body.date = new Date().toISOString().substring(0, 10);
         console.log(request.body.date);
        }else{
-        request.body.date = new Date(request.body.date);
+        request.body.date = new Date(request.body.date).toISOString().substring(0,10);
         console.log(request.body.date);
        }
       //  console.log(excercise );
       //  console.log(id);
-      const date = (request.body['date']).toString().split(" ");
-      excercise.date = (date[0] + " " + date[1] + " " +  date[2] + " " + date[3]);
+      // const date = (request.body['date']).toString().split(" ");
+      // excercise.date = (date[0] + " " + date[1] + " " +  date[2] + " " + date[3]);
       
+
+      excercise.date = request.body.date;
       console.log(excercise.date);
 
        Tracker.findById(id, (err, document) => {
