@@ -72,10 +72,11 @@ app.post('/api/users/:_id/exercises', bodyParser.urlencoded({ extended: false })
     date: request.body.date
   })
   
-  if(newSession.date === '' || newSession.date === undefined){
+  if(newSession.date === '' || newSession.date === undefined || newSession.date.length < 10 ){
     newSession.date = new Date().toDateString();
   }else{
     newSession.date = new Date(newSession.date).toDateString;
+    
   }
   
   User.findByIdAndUpdate(
