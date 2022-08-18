@@ -2,11 +2,10 @@ require('dotenv').config();
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-
 const cors = require('cors')
-
 const mongoose = require('mongoose')
 const mongodb = require('mongodb')
+const testdate = require('./validation').checkDate;
 
 var uri = process.env.MONGO_URL;
 
@@ -66,18 +65,27 @@ app.get('/api/users', (request, response) => {
 
 app.post('/api/users/:_id/exercises', bodyParser.urlencoded({ extended: false }) , (request, response) => {
   
-    console.log(request.body);
+    //console.log(request.body);
   let newSession = new Session({
     description: request.body.description,
     duration: parseInt(request.body.duration),
     date: request.body.date
   })
   
-  if(newSession.date === '' || newSession.date === undefined || newSession.date.length < 10 || newSession.date.length > 10 ){
-    newSession.date = new Date().toDateString();
+  
+    //console.log(testdate(newSession.date));
+  
+  if(testdate(newSession.date)){
+    let date = new Date(newSession.date).toISOString();
+    let isValidDate = Date.parse(date);
+    console.log(new Date(isValidDate).toDateString());
+    if(isNaN(isValidDate)){
+        newSession.date = new Date().toDateString();
+    }else{
+        newSession.date = new Date(newSession.date).toDateString();
+    }
   }else{
-    newSession.date = new Date(newSession.date).toDateString;
-    
+    newSession.date = new Date().toDateString();
   }
   
   User.findByIdAndUpdate(
