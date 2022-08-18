@@ -91,7 +91,7 @@ app.post('/api/users/:_id/exercises', (request, response) => {
                         username: document.username,  
                         description: excercise.description,
                         duration: excercise.duration,
-                        date: excercise.date, 
+                        date: new Date(excercise.date).toDateString(), 
                         _id : document.id}); // 8th testcase.....
                   }   
               });
