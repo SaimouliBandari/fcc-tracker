@@ -59,7 +59,7 @@ app.post('/api/users/:_id/exercises', (request, response) => {
        excercise.description = request.body['description'];
        excercise.duration = request.body['duration'];
        console.log()
-       if(request.body.date === ""){
+       if(request.body.date === "" || request.body.date === undefined){
         request.body.date = new Date();
         console.log(request.body.date);
        }else{
