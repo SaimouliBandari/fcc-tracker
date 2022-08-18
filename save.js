@@ -66,13 +66,14 @@ app.get('/api/users', (request, response) => {
 
 app.post('/api/users/:_id/exercises', bodyParser.urlencoded({ extended: false }) , (request, response) => {
   
+    console.log(request.body);
   let newSession = new Session({
     description: request.body.description,
     duration: parseInt(request.body.duration),
     date: request.body.date
   })
   
-  if(newSession.date === '' || newSession.date === undefined || newSession.date.length < 10 ){
+  if(newSession.date === '' || newSession.date === undefined || newSession.date.length < 10 || newSession.date.length > 10 ){
     newSession.date = new Date().toDateString();
   }else{
     newSession.date = new Date(newSession.date).toDateString;
