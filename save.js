@@ -112,24 +112,31 @@ app.post('/api/users/:_id/exercises', bodyParser.urlencoded({ extended: false })
 app.get('/api/users/:_id/logs', (request, response) => {
   
   User.findById({_id : request.params._id}, (error, result) => {
+    // console.log(result);
+    // console.log(new Date(result.log[0].date).getTime());
     if(!error){
       let responseObject = result
       
       if(request.query.from || request.query.to){
         
-        let fromDate = new Date(0);
-        let toDate = new Date();
+        let fromDate = new Date(0).getTime();
+        let toDate = new Date().getTime();
         
         if(request.query.from){
-          fromDate = new Date(request.query.from);
+          fromDate = new Date(request.query.from).getTime();
         }
 
         if(request.query.to){
-          toDate = new Date(request.query.to);
+          toDate = new Date(request.query.to).getTime();
         }
         
+        console.log(fromDate);
+        console.log(toDate);
+
         responseObject.log = responseObject.log.filter((session) => {
-          let sessionDate = session.date
+          let sessionDate = new Date(session.date).getTime();
+
+          console.log('sessiontime -> ' + sessionDate);
           
           if(sessionDate >= fromDate && sessionDate <= toDate){
             //session.date = new Date(sessionDate).toDateString();
