@@ -72,8 +72,10 @@ app.post('/api/users/:_id/exercises', bodyParser.urlencoded({ extended: false })
     date: request.body.date
   })
   
-  if(newSession.date === ''){
-    newSession.date = new Date().toISOString().substring(0, 10)
+  if(newSession.date === '' || newSession.date === undefined){
+    newSession.date = new Date().toDateString();
+  }else{
+    newSession.date = new Date(newSession.date).toDateString;
   }
   
   User.findByIdAndUpdate(
@@ -87,7 +89,7 @@ app.post('/api/users/:_id/exercises', bodyParser.urlencoded({ extended: false })
         responseObject['username'] = updatedUser.username
         responseObject['description'] = newSession.description
         responseObject['duration'] = newSession.duration
-        responseObject['date'] = new Date(newSession.date).toDateString()
+        responseObject['date'] = newSession.date
         responseObject['_id'] = updatedUser.id
        
         
@@ -117,10 +119,10 @@ app.get('/api/users/:_id/logs', (request, response) => {
         }
         
         responseObject.log = responseObject.log.filter((session) => {
-          let sessionDate = new Date(session.date)
+          let sessionDate = session.date
           
           if(sessionDate >= fromDate && sessionDate <= toDate){
-            session.date = new Date(sessionDate).toDateString();
+            //session.date = new Date(sessionDate).toDateString();
             return session;
           }
           
@@ -133,10 +135,10 @@ app.get('/api/users/:_id/logs', (request, response) => {
       }
 
       responseObject.log = responseObject.log.filter((session) => {
-        let sessionDate = new Date(session.date);
+        let sessionDate = session.date;
         console.log(sessionDate);
-          session.date = new Date(sessionDate).toDateString();
-        console.log(responseObject.date);
+       //   session.date = new Date(sessionDate).toDateString();
+      //  console.log(responseObject.date);
           return session;
       })
 
