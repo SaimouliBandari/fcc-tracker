@@ -113,11 +113,21 @@ app.get('/api/users/:_id/logs',(req, res) => {
     const id = req.params['_id'];
 
     Tracker.findById({_id: id}, (err, doc) =>{
+      let exeArr = new Array();
+      doc.excercise.forEach( obj => {
+         console.log(new Date(obj.date).toDateString());
+         const exeObj = new Object();
+         exeObj.description = obj.description;
+         exeObj.duration = obj.duration;
+         exeObj.date = new Date(obj.date).toDateString();
+         console.log(exeObj);
+         exeArr.push(exeObj);
+      });
         res.json({
           username : doc.username,
           count : doc.excercise.length,
           _id: doc.id,
-          log : doc.excercise
+          log : exeArr
         })
     })
 })
