@@ -143,6 +143,7 @@ app.get('/api/users/:_id/logs',(request, response) => {
         responseobject.excercise = responseobject.excercise.filter((excercise) => {
           let date = new Date(excercise.date).getTime();
           
+          excercise.duration = parseInt(excercise.duration);
           excercise.date = new Date(date).toDateString();
           return excercise
           
