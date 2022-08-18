@@ -54,9 +54,9 @@ app.post('/api/users', bodyParser.urlencoded({ extended: false }), (request, res
   })
 })
 
-app.get('/api/exercise/users', (request, response) => {
+app.get('/api/users', (request, response) => {
   
-  User.find({}, (error, arrayOfUsers) => {
+  User.find({}, {_id: 1, username: 1, __v: 1}, (error, arrayOfUsers) => {
     if(!error){
       response.json(arrayOfUsers)
     }
