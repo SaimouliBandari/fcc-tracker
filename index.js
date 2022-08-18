@@ -147,6 +147,10 @@ app.get('/api/users/:_id/logs',(request, response) => {
           return excercise
           
         });
+
+        if(request.query.limit){
+          responseobject.excercise = responseobject.excercise.slice(0, request.query.limit)
+        }
           
           console.log(responseobject);
           response.json({
@@ -155,6 +159,8 @@ app.get('/api/users/:_id/logs',(request, response) => {
             _id: responseobject.id,
             log : responseobject.excercise
           })
+
+
 
     }
     
