@@ -66,12 +66,7 @@ app.post('/api/users/:_id/exercises', (request, response) => {
         request.body.date = new Date(request.body.date).toISOString().substring(0,10);
         console.log(request.body.date);
        }
-      //  console.log(excercise );
-      //  console.log(id);
-      // const date = (request.body['date']).toString().split(" ");
-      // excercise.date = (date[0] + " " + date[1] + " " +  date[2] + " " + date[3]);
       
-
       excercise.date = request.body.date;
       console.log(excercise.date);
 
@@ -79,20 +74,25 @@ app.post('/api/users/:_id/exercises', (request, response) => {
             if(err) console.log("error occured whiling finding");
             
             if(!err && document != null){
-              // console.log(typeof doc.excercise);
-              // console.log( doc.excercise.length);
-              userSchema.excercise = excercise;
-              Tracker.updateOne({_id: id}, {$push : {excercise : excercise}}, (err, doc) => {
+              let count = document.excercise.length;
+              
+              Tracker.updateOne({_id: id}, {$push : {excercise : excercise}},{upsert : true}, (err, doc) => {
+                  
+                  
                   if(err){
                     console.log("error while updating");
                     return;
                   }else{
-                      response.json({
-                        username: document.username,  
-                        description: excercise.description,
-                        duration: excercise.duration,
-                        date: new Date(excercise.date).toDateString(), 
-                        _id : document.id}); // 8th testcase.....
+                    Tracker.find({_id : id, excercise : 1},(err,result) => {
+                      response.json(result);
+                    })
+                    // response.json({
+                    // username: document.username,  
+                    // description: document.excercise[count].description,
+                    // duration: document.excercise[count].duration,
+                    // date: new Date(excercise.date).toDateString(), 
+                    // _id : document.id}); // 8th testcase.....
+                    
                   }   
               });
             }
