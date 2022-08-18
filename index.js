@@ -149,9 +149,12 @@ app.get('/api/users/:_id/logs',(request, response) => {
         });
           
           console.log(responseobject);
-          response.json(responseobject);
-        //  console.log(fromDate);
-         // console.log(toDate);
+          response.json({
+            username : responseobject.username,
+            count : responseobject.excercise.length,
+            _id: responseobject.id,
+            log : responseobject.excercise
+          })
 
     }
     
